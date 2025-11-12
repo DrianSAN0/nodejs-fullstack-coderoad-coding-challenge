@@ -8,11 +8,6 @@ interface Item {
   description: string
 }
 
-interface ItemPayload {
-  title: string
-  description: string
-}
-
 export default function App(): JSX.Element {
   const [items, setItems] = useState<Item[]>([])
   const [title, setTitle] = useState<string>('')
@@ -26,7 +21,7 @@ export default function App(): JSX.Element {
   async function fetchItems(): Promise<void> {
     setLoading(true)
     try {
-      const res = await fetch(`${API}/items`)
+      const res = await fetch(${API}/items)
       const data = await res.json()
       setItems(data)
     } catch (err) {
@@ -41,7 +36,7 @@ export default function App(): JSX.Element {
     // PUT YOUR CODE HERE
   }
 
-  async function removeItem(id: number): Promise<void> {
+  async function removeItem(_: number): Promise<void> {
     if (!confirm('Delete this item?')) return
     // PUT YOUR CODE HERE
   }
