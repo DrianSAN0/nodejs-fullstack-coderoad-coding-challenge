@@ -1,16 +1,17 @@
-name: Fullstack Deploy
+name: CI Build Pipeline
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -18,17 +19,18 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install server dependencies and build
-        run: |
-          cd server
-          npm install
-          npm run build
+      - name: Install dependencies (root)
+        working-directory: ./server
+        run: npm install
 
-      - name: Install client dependencies and build
-        run: |
-          cd client
-          npm install
-          npm run build
+      - name: Build root project
+        working-directory: ./server
+        run: npm run build
 
-      - name: Deploy
-        run: bash scripts/deploy.sh
+      - name: Install dependencies (client)
+        working-directory: ./client
+        run: npm install
+
+      - name: Build client project
+        working-directory: ./client
+        run: npm run build
